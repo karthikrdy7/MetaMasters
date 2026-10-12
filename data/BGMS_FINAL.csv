@@ -1,0 +1,289 @@
+match_id,day,map,match,team name,team_placement,elim_points,placement_points,Total
+1,1,Rondo,1,7GODS ESPORTS,2,6,6,12
+1,1,Rondo,1,Elite Nova Esports,11,9,0,9
+1,1,Rondo,1,GOSOLO RAPID CHAOS ESPORTS,3,8,5,13
+1,1,Rondo,1,Genesis Esports,14,6,0,6
+1,1,Rondo,1,Gladiators Esports,7,16,1,17
+1,1,Rondo,1,IQOO Orangutan,13,5,0,5
+1,1,Rondo,1,IQOO Reckoning Esports,9,11,0,11
+1,1,Rondo,1,IQOO Revenant Xspark,12,1,0,1
+1,1,Rondo,1,IQOO Team Soul,10,3,0,3
+1,1,Rondo,1,IRIS MYTH,6,0,2,2
+1,1,Rondo,1,Nebula Esports,1,20,10,30
+1,1,Rondo,1,Team Apex Gaming,16,6,0,6
+1,1,Rondo,1,Team Outrage,4,5,4,9
+1,1,Rondo,1,Wyld Fangs,8,6,1,7
+1,1,Rondo,1,iQOO 8Bit,15,2,0,2
+1,1,Rondo,1,iQOO Team TamiLas,5,6,3,9
+2,1,Erangel,2,7GODS ESPORTS,5,8,3,11
+2,1,Erangel,2,Elite Nova Esports,4,4,4,8
+2,1,Erangel,2,GOSOLO RAPID CHAOS ESPORTS,11,5,0,5
+2,1,Erangel,2,Genesis Esports,3,2,5,7
+2,1,Erangel,2,Gladiators Esports,8,4,1,5
+2,1,Erangel,2,IQOO Orangutan,16,0,0,0
+2,1,Erangel,2,IQOO Reckoning Esports,6,4,2,6
+2,1,Erangel,2,IQOO Revenant Xspark,1,10,10,20
+2,1,Erangel,2,IQOO Team Soul,15,4,0,4
+2,1,Erangel,2,IRIS MYTH,13,0,0,0
+2,1,Erangel,2,Nebula Esports,2,6,6,12
+2,1,Erangel,2,Team Apex Gaming,12,2,0,2
+2,1,Erangel,2,Team Outrage,7,2,1,3
+2,1,Erangel,2,Wyld Fangs,9,0,0,0
+2,1,Erangel,2,iQOO 8Bit,14,0,0,0
+2,1,Erangel,2,iQOO Team TamiLas,10,8,0,8
+3,1,Miramar,3,7GODS ESPORTS,6,0,2,2
+3,1,Miramar,3,Elite Nova Esports,4,3,4,7
+3,1,Miramar,3,GOSOLO RAPID CHAOS ESPORTS,3,3,5,8
+3,1,Miramar,3,Genesis Esports,2,12,6,18
+3,1,Miramar,3,Gladiators Esports,9,2,0,2
+3,1,Miramar,3,IQOO Orangutan,11,4,0,4
+3,1,Miramar,3,IQOO Reckoning Esports,5,0,3,3
+3,1,Miramar,3,IQOO Revenant Xspark,8,4,1,5
+3,1,Miramar,3,IQOO Team Soul,10,3,0,3
+3,1,Miramar,3,IRIS MYTH,13,2,0,2
+3,1,Miramar,3,Nebula Esports,1,12,10,22
+3,1,Miramar,3,Team Apex Gaming,7,4,1,5
+3,1,Miramar,3,Team Outrage,12,2,0,2
+3,1,Miramar,3,Wyld Fangs,15,0,0,0
+3,1,Miramar,3,iQOO 8Bit,16,0,0,0
+3,1,Miramar,3,iQOO Team TamiLas,14,4,0,4
+4,1,Rondo,4,7GODS ESPORTS,3,5,5,10
+4,1,Rondo,4,Elite Nova Esports,5,9,3,12
+4,1,Rondo,4,GOSOLO RAPID CHAOS ESPORTS,2,9,6,15
+4,1,Rondo,4,Genesis Esports,10,7,0,7
+4,1,Rondo,4,Gladiators Esports,6,3,2,5
+4,1,Rondo,4,IQOO Orangutan,15,8,0,8
+4,1,Rondo,4,IQOO Reckoning Esports,1,9,10,19
+4,1,Rondo,4,IQOO Revenant Xspark,9,11,0,11
+4,1,Rondo,4,IQOO Team Soul,4,5,4,9
+4,1,Rondo,4,IRIS MYTH,7,4,1,5
+4,1,Rondo,4,Nebula Esports,16,4,0,4
+4,1,Rondo,4,Team Apex Gaming,12,7,0,7
+4,1,Rondo,4,Team Outrage,8,5,1,6
+4,1,Rondo,4,Wyld Fangs,11,8,0,8
+4,1,Rondo,4,iQOO 8Bit,14,9,0,9
+4,1,Rondo,4,iQOO Team TamiLas,13,2,0,2
+5,1,Miramar,5,7GODS ESPORTS,11,2,0,2
+5,1,Miramar,5,Elite Nova Esports,5,0,3,3
+5,1,Miramar,5,GOSOLO RAPID CHAOS ESPORTS,15,0,0,0
+5,1,Miramar,5,Genesis Esports,14,1,0,1
+5,1,Miramar,5,Gladiators Esports,6,4,2,6
+5,1,Miramar,5,IQOO Orangutan,1,13,10,23
+5,1,Miramar,5,IQOO Reckoning Esports,4,5,4,9
+5,1,Miramar,5,IQOO Revenant Xspark,9,5,0,5
+5,1,Miramar,5,IQOO Team Soul,7,5,1,6
+5,1,Miramar,5,IRIS MYTH,12,0,0,0
+5,1,Miramar,5,Nebula Esports,3,12,5,17
+5,1,Miramar,5,Team Apex Gaming,2,2,6,8
+5,1,Miramar,5,Team Outrage,13,5,0,5
+5,1,Miramar,5,Wyld Fangs,8,4,1,5
+5,1,Miramar,5,iQOO 8Bit,10,1,0,1
+5,1,Miramar,5,iQOO Team TamiLas,16,0,0,0
+6,1,Erangel,6,7GODS ESPORTS,14,0,0,0
+6,1,Erangel,6,Elite Nova Esports,4,8,4,12
+6,1,Erangel,6,GOSOLO RAPID CHAOS ESPORTS,11,3,0,3
+6,1,Erangel,6,Genesis Esports,8,1,1,2
+6,1,Erangel,6,Gladiators Esports,6,5,2,7
+6,1,Erangel,6,IQOO Orangutan,15,4,0,4
+6,1,Erangel,6,IQOO Reckoning Esports,9,4,0,4
+6,1,Erangel,6,IQOO Revenant Xspark,10,5,0,5
+6,1,Erangel,6,IQOO Team Soul,16,0,0,0
+6,1,Erangel,6,IRIS MYTH,12,1,0,1
+6,1,Erangel,6,Nebula Esports,3,2,5,7
+6,1,Erangel,6,Team Apex Gaming,5,5,3,8
+6,1,Erangel,6,Team Outrage,7,6,1,7
+6,1,Erangel,6,Wyld Fangs,2,6,6,12
+6,1,Erangel,6,iQOO 8Bit,13,5,0,5
+6,1,Erangel,6,iQOO Team TamiLas,1,6,10,16
+7,2,Rondo,7,7GODS ESPORTS,8,4,1,5
+7,2,Rondo,7,Elite Nova Esports,11,4,0,4
+7,2,Rondo,7,GOSOLO RAPID CHAOS ESPORTS,3,9,5,14
+7,2,Rondo,7,Genesis Esports,14,2,0,2
+7,2,Rondo,7,Gladiators Esports,1,17,10,27
+7,2,Rondo,7,IQOO Orangutan,6,15,2,17
+7,2,Rondo,7,IQOO Reckoning Esports,2,7,6,13
+7,2,Rondo,7,IQOO Revenant Xspark,7,10,1,11
+7,2,Rondo,7,IQOO Team Soul,9,4,0,4
+7,2,Rondo,7,IRIS MYTH,5,6,3,9
+7,2,Rondo,7,Nebula Esports,13,4,0,4
+7,2,Rondo,7,Team Apex Gaming,10,3,0,3
+7,2,Rondo,7,Team Outrage,12,5,0,5
+7,2,Rondo,7,Wyld Fangs,15,1,0,1
+7,2,Rondo,7,iQOO 8Bit,16,0,0,0
+7,2,Rondo,7,iQOO Team TamiLas,4,14,4,18
+8,2,Erangel,8,7GODS ESPORTS,15,1,0,1
+8,2,Erangel,8,Elite Nova Esports,2,7,6,13
+8,2,Erangel,8,GOSOLO RAPID CHAOS ESPORTS,7,2,1,3
+8,2,Erangel,8,Genesis Esports,16,1,0,1
+8,2,Erangel,8,Gladiators Esports,4,1,4,5
+8,2,Erangel,8,IQOO Orangutan,8,2,1,3
+8,2,Erangel,8,IQOO Reckoning Esports,6,3,2,5
+8,2,Erangel,8,IQOO Revenant Xspark,10,1,0,1
+8,2,Erangel,8,IQOO Team Soul,5,8,3,11
+8,2,Erangel,8,IRIS MYTH,11,2,0,2
+8,2,Erangel,8,Nebula Esports,1,11,10,21
+8,2,Erangel,8,Team Apex Gaming,3,7,5,12
+8,2,Erangel,8,Team Outrage,9,5,0,5
+8,2,Erangel,8,Wyld Fangs,14,1,0,1
+8,2,Erangel,8,iQOO 8Bit,12,4,0,4
+8,2,Erangel,8,iQOO Team TamiLas,13,3,0,3
+9,2,Miramar,9,7GODS ESPORTS,7,4,1,5
+9,2,Miramar,9,Elite Nova Esports,10,2,0,2
+9,2,Miramar,9,GOSOLO RAPID CHAOS ESPORTS,3,4,5,9
+9,2,Miramar,9,Genesis Esports,14,4,0,4
+9,2,Miramar,9,Gladiators Esports,4,8,4,12
+9,2,Miramar,9,IQOO Orangutan,8,5,1,6
+9,2,Miramar,9,IQOO Reckoning Esports,5,0,3,3
+9,2,Miramar,9,IQOO Revenant Xspark,9,6,0,6
+9,2,Miramar,9,IQOO Team Soul,12,2,0,2
+9,2,Miramar,9,IRIS MYTH,13,2,0,2
+9,2,Miramar,9,Nebula Esports,1,12,10,22
+9,2,Miramar,9,Team Apex Gaming,15,0,0,0
+9,2,Miramar,9,Team Outrage,11,2,0,2
+9,2,Miramar,9,Wyld Fangs,16,1,0,1
+9,2,Miramar,9,iQOO 8Bit,2,6,6,12
+9,2,Miramar,9,iQOO Team TamiLas,6,1,2,3
+10,2,Rondo,10,7GODS ESPORTS,8,2,1,3
+10,2,Rondo,10,Elite Nova Esports,12,6,0,6
+10,2,Rondo,10,GOSOLO RAPID CHAOS ESPORTS,6,5,2,7
+10,2,Rondo,10,Genesis Esports,10,5,0,5
+10,2,Rondo,10,Gladiators Esports,7,3,1,4
+10,2,Rondo,10,IQOO Orangutan,3,14,5,19
+10,2,Rondo,10,IQOO Reckoning Esports,9,4,0,4
+10,2,Rondo,10,IQOO Revenant Xspark,15,11,0,11
+10,2,Rondo,10,IQOO Team Soul,14,2,0,2
+10,2,Rondo,10,IRIS MYTH,2,8,6,14
+10,2,Rondo,10,Nebula Esports,5,5,3,8
+10,2,Rondo,10,Team Apex Gaming,1,13,10,23
+10,2,Rondo,10,Team Outrage,16,2,0,2
+10,2,Rondo,10,Wyld Fangs,4,12,4,16
+10,2,Rondo,10,iQOO 8Bit,13,7,0,7
+10,2,Rondo,10,iQOO Team TamiLas,11,5,0,5
+11,2,Miramar,11,7GODS ESPORTS,15,5,0,5
+11,2,Miramar,11,Elite Nova Esports,7,2,1,3
+11,2,Miramar,11,GOSOLO RAPID CHAOS ESPORTS,11,1,0,1
+11,2,Miramar,11,Genesis Esports,3,10,5,15
+11,2,Miramar,11,Gladiators Esports,5,6,3,9
+11,2,Miramar,11,IQOO Orangutan,13,0,0,0
+11,2,Miramar,11,IQOO Reckoning Esports,2,2,6,8
+11,2,Miramar,11,IQOO Revenant Xspark,16,0,0,0
+11,2,Miramar,11,IQOO Team Soul,1,11,10,21
+11,2,Miramar,11,IRIS MYTH,8,2,1,3
+11,2,Miramar,11,Nebula Esports,14,4,0,4
+11,2,Miramar,11,Team Apex Gaming,12,5,0,5
+11,2,Miramar,11,Team Outrage,4,3,4,7
+11,2,Miramar,11,Wyld Fangs,9,1,0,1
+11,2,Miramar,11,iQOO 8Bit,6,2,2,4
+11,2,Miramar,11,iQOO Team TamiLas,10,3,0,3
+12,2,Erangel,12,7GODS ESPORTS,16,0,0,0
+12,2,Erangel,12,Elite Nova Esports,12,3,0,3
+12,2,Erangel,12,GOSOLO RAPID CHAOS ESPORTS,2,8,6,14
+12,2,Erangel,12,Genesis Esports,5,5,3,8
+12,2,Erangel,12,Gladiators Esports,1,12,10,22
+12,2,Erangel,12,IQOO Orangutan,6,6,2,8
+12,2,Erangel,12,IQOO Reckoning Esports,10,1,0,1
+12,2,Erangel,12,IQOO Revenant Xspark,14,0,0,0
+12,2,Erangel,12,IQOO Team Soul,3,2,5,7
+12,2,Erangel,12,IRIS MYTH,13,1,0,1
+12,2,Erangel,12,Nebula Esports,7,9,1,10
+12,2,Erangel,12,Team Apex Gaming,15,0,0,0
+12,2,Erangel,12,Team Outrage,8,1,1,2
+12,2,Erangel,12,Wyld Fangs,11,4,0,4
+12,2,Erangel,12,iQOO 8Bit,9,5,0,5
+12,2,Erangel,12,iQOO Team TamiLas,4,2,4,6
+13,3,Rondo,13,7GODS ESPORTS,7,3,1,4
+13,3,Rondo,13,Elite Nova Esports,13,5,0,5
+13,3,Rondo,13,GOSOLO RAPID CHAOS ESPORTS,6,7,2,9
+13,3,Rondo,13,Genesis Esports,12,13,0,13
+13,3,Rondo,13,Gladiators Esports,1,15,10,25
+13,3,Rondo,13,IQOO Orangutan,15,6,0,6
+13,3,Rondo,13,IQOO Reckoning Esports,5,3,3,6
+13,3,Rondo,13,IQOO Revenant Xspark,16,1,0,1
+13,3,Rondo,13,IQOO Team Soul,11,7,0,7
+13,3,Rondo,13,IRIS MYTH,3,10,5,15
+13,3,Rondo,13,Nebula Esports,9,5,0,5
+13,3,Rondo,13,Team Apex Gaming,8,9,1,10
+13,3,Rondo,13,Team Outrage,2,6,6,12
+13,3,Rondo,13,Wyld Fangs,14,3,0,3
+13,3,Rondo,13,iQOO 8Bit,10,6,0,6
+13,3,Rondo,13,iQOO Team TamiLas,4,5,4,9
+14,3,Erangel,14,7GODS ESPORTS,16,0,0,0
+14,3,Erangel,14,Elite Nova Esports,6,3,2,5
+14,3,Erangel,14,GOSOLO RAPID CHAOS ESPORTS,4,4,4,8
+14,3,Erangel,14,Genesis Esports,11,3,0,3
+14,3,Erangel,14,Gladiators Esports,7,2,1,3
+14,3,Erangel,14,IQOO Orangutan,14,2,0,2
+14,3,Erangel,14,IQOO Reckoning Esports,10,5,0,5
+14,3,Erangel,14,IQOO Revenant Xspark,5,4,3,7
+14,3,Erangel,14,IQOO Team Soul,13,4,0,4
+14,3,Erangel,14,IRIS MYTH,15,3,0,3
+14,3,Erangel,14,Nebula Esports,8,0,1,1
+14,3,Erangel,14,Team Apex Gaming,3,9,5,14
+14,3,Erangel,14,Team Outrage,12,4,0,4
+14,3,Erangel,14,Wyld Fangs,9,1,0,1
+14,3,Erangel,14,iQOO 8Bit,1,12,10,22
+14,3,Erangel,14,iQOO Team TamiLas,2,5,6,11
+15,3,Miramar,15,7GODS ESPORTS,4,9,4,13
+15,3,Miramar,15,Elite Nova Esports,9,4,0,4
+15,3,Miramar,15,GOSOLO RAPID CHAOS ESPORTS,6,1,2,3
+15,3,Miramar,15,Genesis Esports,12,2,0,2
+15,3,Miramar,15,Gladiators Esports,16,0,0,0
+15,3,Miramar,15,IQOO Orangutan,1,14,10,24
+15,3,Miramar,15,IQOO Reckoning Esports,7,4,1,5
+15,3,Miramar,15,IQOO Revenant Xspark,14,2,0,2
+15,3,Miramar,15,IQOO Team Soul,3,7,5,12
+15,3,Miramar,15,IRIS MYTH,5,3,3,6
+15,3,Miramar,15,Nebula Esports,10,1,0,1
+15,3,Miramar,15,Team Apex Gaming,2,4,6,10
+15,3,Miramar,15,Team Outrage,15,1,0,1
+15,3,Miramar,15,Wyld Fangs,8,2,1,3
+15,3,Miramar,15,iQOO 8Bit,13,4,0,4
+15,3,Miramar,15,iQOO Team TamiLas,11,2,0,2
+16,3,Rondo,16,7GODS ESPORTS,10,10,0,10
+16,3,Rondo,16,Elite Nova Esports,15,5,0,5
+16,3,Rondo,16,GOSOLO RAPID CHAOS ESPORTS,1,10,10,20
+16,3,Rondo,16,Genesis Esports,6,10,2,12
+16,3,Rondo,16,Gladiators Esports,14,2,0,2
+16,3,Rondo,16,IQOO Orangutan,9,5,0,5
+16,3,Rondo,16,IQOO Reckoning Esports,2,10,6,16
+16,3,Rondo,16,IQOO Revenant Xspark,4,6,4,10
+16,3,Rondo,16,IQOO Team Soul,8,10,1,11
+16,3,Rondo,16,IRIS MYTH,7,4,1,5
+16,3,Rondo,16,Nebula Esports,11,4,0,4
+16,3,Rondo,16,Team Apex Gaming,12,9,0,9
+16,3,Rondo,16,Team Outrage,13,5,0,5
+16,3,Rondo,16,Wyld Fangs,3,9,5,14
+16,3,Rondo,16,iQOO 8Bit,16,8,0,8
+16,3,Rondo,16,iQOO Team TamiLas,5,4,3,7
+17,3,Miramar,17,7GODS ESPORTS,8,2,1,3
+17,3,Miramar,17,Elite Nova Esports,16,0,0,0
+17,3,Miramar,17,GOSOLO RAPID CHAOS ESPORTS,13,1,0,1
+17,3,Miramar,17,Genesis Esports,10,5,0,5
+17,3,Miramar,17,Gladiators Esports,7,7,1,8
+17,3,Miramar,17,IQOO Orangutan,1,14,10,24
+17,3,Miramar,17,IQOO Reckoning Esports,2,6,6,12
+17,3,Miramar,17,IQOO Revenant Xspark,9,4,0,4
+17,3,Miramar,17,IQOO Team Soul,12,2,0,2
+17,3,Miramar,17,IRIS MYTH,11,1,0,1
+17,3,Miramar,17,Nebula Esports,3,5,5,10
+17,3,Miramar,17,Team Apex Gaming,5,2,3,5
+17,3,Miramar,17,Team Outrage,4,5,4,9
+17,3,Miramar,17,Wyld Fangs,15,4,0,4
+17,3,Miramar,17,iQOO 8Bit,14,2,0,2
+17,3,Miramar,17,iQOO Team TamiLas,6,0,2,2
+18,3,Erangel,18,7GODS ESPORTS,10,4,0,4
+18,3,Erangel,18,Elite Nova Esports,8,4,1,5
+18,3,Erangel,18,GOSOLO RAPID CHAOS ESPORTS,4,13,4,17
+18,3,Erangel,18,Genesis Esports,7,3,1,4
+18,3,Erangel,18,Gladiators Esports,1,7,10,17
+18,3,Erangel,18,IQOO Orangutan,3,3,5,8
+18,3,Erangel,18,IQOO Reckoning Esports,2,4,6,10
+18,3,Erangel,18,IQOO Revenant Xspark,13,4,0,4
+18,3,Erangel,18,IQOO Team Soul,15,0,0,0
+18,3,Erangel,18,IRIS MYTH,6,0,2,2
+18,3,Erangel,18,Nebula Esports,11,0,0,0
+18,3,Erangel,18,Team Apex Gaming,5,3,3,6
+18,3,Erangel,18,Team Outrage,14,2,0,2
+18,3,Erangel,18,Wyld Fangs,9,4,0,4
+18,3,Erangel,18,iQOO 8Bit,16,1,0,1
+18,3,Erangel,18,iQOO Team TamiLas,12,6,0,6

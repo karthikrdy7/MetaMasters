@@ -11,6 +11,7 @@ from controllers.result_controller import router as result_router
 from controllers.analytics_controller import router as analytics_router
 from controllers.history_controller import router as history_router
 from fastapi.middleware.cors import CORSMiddleware
+from controllers.import_controller import router as import_router
 
 
 
@@ -30,6 +31,7 @@ app.include_router(standings_router)
 app.include_router(result_router)
 app.include_router(analytics_router)
 app.include_router(history_router)
+app.include_router(import_router)
 
 
 @app.get("/")

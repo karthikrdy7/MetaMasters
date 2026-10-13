@@ -1,7 +1,19 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import {
+  lazy,
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import {
   Activity,
   BarChart3,
+  AlertCircle,
+  CheckCircle2,
+  Database,
+  FileSpreadsheet,
+  Upload,
   ChevronDown,
   Crosshair,
   Gamepad2,
@@ -13,19 +25,15 @@ import {
   Shield,
   Swords,
   Trophy,
+  Trash2,
   Users,
   X,
   Zap,
 } from 'lucide-react'
-import {
-  Area,
-  AreaChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts'
+
+const PerformanceChart = lazy(
+  () => import('./components/PerformanceChart.jsx'),
+)
 import './App.css'
 
 const API_URL = (
@@ -246,93 +254,27 @@ function Overview({ teams, matches, analytics, onNavigate }) {
             }
           />
 
+
           {chartData.length ? (
             <div className="chart-container">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart
+              <Suspense
+                fallback={
+                  <div className="empty-state">
+                    Loading performance chart...
+                  </div>
+                }
+              >
+                <PerformanceChart
                   data={chartData}
-                  margin={{
-                    top: 12,
-                    right: 12,
-                    left: -16,
-                    bottom: 5,
-                  }}
-                >
-                  <defs>
-                    <linearGradient
-                      id="pointsGradient"
-                      x1="0"
-                      y1="0"
-                      x2="0"
-                      y2="1"
-                    >
-                      <stop
-                        offset="0%"
-                        stopColor="#a3e635"
-                        stopOpacity={0.27}
-                      />
-                      <stop
-                        offset="95%"
-                        stopColor="#a3e635"
-                        stopOpacity={0}
-                      />
-                    </linearGradient>
-                  </defs>
-
-                  <CartesianGrid
-                    stroke="#24272d"
-                    strokeDasharray="4 4"
-                    vertical={false}
-                  />
-
-                  <XAxis
-                    dataKey="name"
-                    tick={{ fill: '#858b97', fontSize: 10 }}
-                    tickLine={false}
-                    axisLine={false}
-                    interval={0}
-                    tickFormatter={(name) =>
-                      name.length > 12
-                        ? `${name.slice(0, 10)}…`
-                        : name
-                    }
-                  />
-
-                  <YAxis
-                    tick={{ fill: '#858b97', fontSize: 11 }}
-                    tickLine={false}
-                    axisLine={false}
-                  />
-
-                  <Tooltip
-                    contentStyle={{
-                      background: '#17191e',
-                      border: '1px solid #30343d',
-                      borderRadius: 10,
-                      color: '#f4f4f5',
-                    }}
-                    formatter={(value) => [
-                      formatNumber(value),
-                      'Points',
-                    ]}
-                  />
-
-                  <Area
-                    type="monotone"
-                    dataKey="points"
-                    stroke="#a3e635"
-                    strokeWidth={2.5}
-                    fill="url(#pointsGradient)"
-                    activeDot={{
-                      r: 5,
-                      fill: '#a3e635',
-                      stroke: '#15170f',
-                      strokeWidth: 2,
-                    }}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
+                  dataKey="points"
+                  xAxisKey="name"
+                  gradientId="pointsGradient"
+                  chartLabel="Points"
+                  formatNumber={formatNumber}
+                />
+              </Suspense>
             </div>
+
           ) : (
             <EmptyState message="Leaderboard data is unavailable." />
           )}
@@ -376,7 +318,7 @@ function Overview({ teams, matches, analytics, onNavigate }) {
             )}
           </div>
         </article>
-      </section>
+      </section >
 
       <section className="content-grid lower-grid">
         <article className="panel">
@@ -448,11 +390,10 @@ function Overview({ teams, matches, analytics, onNavigate }) {
                     <div
                       className="form-fill"
                       style={{
-                        width: `${
-                          (team.last_5_matches_points /
-                            maxRecentPoints) *
+                        width: `${(team.last_5_matches_points /
+                          maxRecentPoints) *
                           100
-                        }%`,
+                          }%`,
                       }}
                     />
                   </div>
@@ -657,9 +598,8 @@ function MatchHistory({ matches }) {
 
           return (
             <article
-              className={`history-card ${
-                isExpanded ? 'history-card-expanded' : ''
-              }`}
+              className={`history-card ${isExpanded ? 'history-card-expanded' : ''
+                }`}
               key={matchKey}
             >
               <div className="history-card-top">
@@ -826,31 +766,33 @@ function TeamDetails({ teams, matches }) {
   ) ?? teams[0]
 
   const teamMatches = useMemo(() => {
-    if (!selectedTeam) return []
+  if (!selectedTeam) return []
 
-    return matches
-      .map((match, index) => {
-        const result = (match.results ?? []).find(
-          (item) =>
-            String(item.team_id) === String(selectedTeam.team_id) ||
-            item.team_name === selectedTeam.team_name,
-        )
-
-        return result
-          ? {
-              ...match,
-              result,
-              match_number: match.match_number ?? index + 1,
-            }
-          : null
-      })
-      .filter(Boolean)
-      .sort(
-        (a, b) =>
-          numeric(a.sequence_number ?? a.match_id) -
-          numeric(b.sequence_number ?? b.match_id),
+  return matches
+    .map((match, index) => {
+      const result = (match.results ?? []).find(
+        (item) =>
+          String(item.team_id) === String(selectedTeam.team_id) ||
+          item.team_name === selectedTeam.team_name,
       )
-  }, [matches, selectedTeam])
+
+      return result
+        ? {
+            ...match,
+            result,
+            day: numeric(match.day ?? match.day_number),
+            map: match.map ?? match.map_name ?? 'Unknown',
+            match_number: match.match_number ?? index + 1,
+          }
+        : null
+    })
+    .filter(Boolean)
+    .sort(
+      (a, b) =>
+        numeric(a.sequence_number ?? a.match_id) -
+        numeric(b.sequence_number ?? b.match_id),
+    )
+}, [matches, selectedTeam])
 
   const chartData = useMemo(
     () =>
@@ -881,9 +823,9 @@ function TeamDetails({ teams, matches }) {
 
   const averagePlacement = validPlacements.length
     ? (
-        validPlacements.reduce((sum, placement) => sum + placement, 0) /
-        validPlacements.length
-      ).toFixed(2)
+      validPlacements.reduce((sum, placement) => sum + placement, 0) /
+      validPlacements.length
+    ).toFixed(2)
     : '—'
 
   const topFiveFinishes = validPlacements.filter(
@@ -896,20 +838,20 @@ function TeamDetails({ teams, matches }) {
 
   const bestMatch = teamMatches.length
     ? teamMatches.reduce((best, current) =>
-        numeric(current.result.total_points) >
+      numeric(current.result.total_points) >
         numeric(best.result.total_points)
-          ? current
-          : best,
-      )
+        ? current
+        : best,
+    )
     : null
 
   const worstMatch = teamMatches.length
     ? teamMatches.reduce((worst, current) =>
-        numeric(current.result.total_points) <
+      numeric(current.result.total_points) <
         numeric(worst.result.total_points)
-          ? current
-          : worst,
-      )
+        ? current
+        : worst,
+    )
     : null
 
   const lastThree = teamMatches.slice(-3)
@@ -921,24 +863,32 @@ function TeamDetails({ teams, matches }) {
       0,
     )
 
-  const dailyPerformance = [1, 2, 3].map((day) => {
-    const dayMatches = teamMatches.filter(
-      (match) => numeric(match.day) === day,
-    )
+const availableDays = [
+  ...new Set(
+    teamMatches
+      .map((match) => numeric(match.day))
+      .filter((day) => Number.isInteger(day) && day > 0),
+  ),
+].sort((a, b) => a - b)
 
-    return {
-      day,
-      matches: dayMatches.length,
-      points: dayMatches.reduce(
-        (sum, match) => sum + numeric(match.result.total_points),
-        0,
-      ),
-      eliminations: dayMatches.reduce(
-        (sum, match) => sum + numeric(match.result.eliminations),
-        0,
-      ),
-    }
-  })
+const dailyPerformance = availableDays.map((day) => {
+  const dayMatches = teamMatches.filter(
+    (match) => numeric(match.day) === day,
+  )
+
+  return {
+    day,
+    matches: dayMatches.length,
+    points: dayMatches.reduce(
+      (sum, match) => sum + numeric(match.result.total_points),
+      0,
+    ),
+    eliminations: dayMatches.reduce(
+      (sum, match) => sum + numeric(match.result.eliminations),
+      0,
+    ),
+  }
+})
 
   const maxDailyPoints = Math.max(
     1,
@@ -1103,9 +1053,8 @@ function TeamDetails({ teams, matches }) {
                   <button
                     type="button"
                     key={key}
-                    className={`team-chart-toggle ${
-                      chartMetric === key ? 'active' : ''
-                    }`}
+                    className={`team-chart-toggle ${chartMetric === key ? 'active' : ''
+                      }`}
                     onClick={() => setChartMetric(key)}
                   >
                     {label === 'Eliminations per match'
@@ -1120,79 +1069,28 @@ function TeamDetails({ teams, matches }) {
 
             {chartData.length ? (
               <div className="chart-container team-details-chart">
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart
+                <Suspense
+                  fallback={
+                    <div className="empty-state">Loading team performance...</div>
+                  }
+                >
+                  <PerformanceChart
                     data={chartData}
-                    margin={{ top: 12, right: 12, left: -16, bottom: 5 }}
-                  >
-                    <defs>
-                      <linearGradient
-                        id="teamDetailsGradient"
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2="1"
-                      >
-                        <stop
-                          offset="0%"
-                          stopColor="#a3e635"
-                          stopOpacity={0.3}
-                        />
-                        <stop
-                          offset="100%"
-                          stopColor="#a3e635"
-                          stopOpacity={0}
-                        />
-                      </linearGradient>
-                    </defs>
+                    dataKey={chartMetric}
+                    xAxisKey="match"
+                    gradientId="teamDetailsGradient"
+                    chartLabel={chartLabels[chartMetric]}
+                    reversed={chartMetric === 'placement'}
+                    allowDecimals={chartMetric === 'placement'}
+                    labelFormatter={(label, payload) => {
+                      const item = payload?.[0]?.payload
 
-                    <CartesianGrid
-                      stroke="#24272d"
-                      strokeDasharray="4 4"
-                      vertical={false}
-                    />
-                    <XAxis
-                      dataKey="match"
-                      tick={{ fill: '#858b97', fontSize: 10 }}
-                      tickLine={false}
-                      axisLine={false}
-                    />
-                    <YAxis
-                      allowDecimals={chartMetric === 'placement'}
-                      tick={{ fill: '#858b97', fontSize: 11 }}
-                      tickLine={false}
-                      axisLine={false}
-                      reversed={chartMetric === 'placement'}
-                    />
-                    <Tooltip
-                      contentStyle={{
-                        background: '#17191e',
-                        border: '1px solid #30343d',
-                        borderRadius: 10,
-                        color: '#f4f4f5',
-                      }}
-                      formatter={(value) => [
-                        value,
-                        chartLabels[chartMetric],
-                      ]}
-                      labelFormatter={(label, payload) => {
-                        const item = payload?.[0]?.payload
-                        return item
-                          ? `${label} · Day ${item.day} · ${item.map}`
-                          : label
-                      }}
-                    />
-                    <Area
-                      type="monotone"
-                      dataKey={chartMetric}
-                      name={chartLabels[chartMetric]}
-                      stroke="#a3e635"
-                      strokeWidth={2.5}
-                      fill="url(#teamDetailsGradient)"
-                      activeDot={{ r: 5 }}
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
+                      return item
+                        ? `${label} · Day ${item.day} · ${item.map}`
+                        : label
+                    }}
+                  />
+                </Suspense>
               </div>
             ) : (
               <EmptyState message="No match results found for this team." />
@@ -1323,13 +1221,12 @@ function TeamDetails({ teams, matches }) {
                         <td>{match.map ?? '—'}</td>
                         <td>
                           <span
-                            className={`placement-pill ${
-                              isWin
-                                ? 'placement-win'
-                                : isTopFive
-                                  ? 'placement-top5'
-                                  : ''
-                            }`}
+                            className={`placement-pill ${isWin
+                              ? 'placement-win'
+                              : isTopFive
+                                ? 'placement-top5'
+                                : ''
+                              }`}
                           >
                             {placement ? `#${placement}` : '—'}
                           </span>
@@ -1466,7 +1363,7 @@ function TeamComparison({ teams, matches }) {
         : 0,
       averagePlacement: placements.length
         ? placements.reduce((sum, value) => sum + value, 0) /
-          placements.length
+        placements.length
         : 0,
       wins,
       topFive,
@@ -1996,10 +1893,1142 @@ function TeamComparison({ teams, matches }) {
 }
 
 /* =========================================================
+   DATA MANAGEMENT
+========================================================= */
+
+function DataManagement() {
+  const [tournaments, setTournaments] = useState([])
+  const [selectedTournament, setSelectedTournament] = useState('')
+  const [file, setFile] = useState(null)
+  const [preview, setPreview] = useState(null)
+  const [importResult, setImportResult] = useState(null)
+  const [loadingTournaments, setLoadingTournaments] = useState(true)
+  const [previewing, setPreviewing] = useState(false)
+  const [importing, setImporting] = useState(false)
+  const [error, setError] = useState('')
+  const [notice, setNotice] = useState('')
+  const [deletingId, setDeletingId] = useState(null)
+
+  const [tournamentStatus, setTournamentStatus] = useState(null)
+  const [loadingStatus, setLoadingStatus] = useState(false)
+
+  const selectedTournamentData = tournaments.find(
+    (tournament) =>
+      String(tournament.id ?? tournament.tournament_id) ===
+      String(selectedTournament),
+  )
+
+  const hasExistingMatches =
+    numeric(
+      tournamentStatus?.matches_count ??
+      tournamentStatus?.total_matches ??
+      tournamentStatus?.matches,
+    ) > 0
+  const importDebug = {
+    selectedTournament,
+    tournamentName: selectedTournamentData?.name,
+    tournamentStatus,
+    hasExistingMatches,
+    loadingStatus,
+    fileSelected: Boolean(file),
+    previewValid: preview?.valid,
+    previewErrors: preview?.error_count,
+    previewRows: preview?.valid_rows,
+  }
+
+  console.log('CSV Import Debug:', importDebug)
+
+  const parseError = async (response) => {
+    try {
+      const data = await response.json()
+
+      if (typeof data.detail === 'string') return data.detail
+
+      if (Array.isArray(data.detail)) {
+        return data.detail
+          .map((item) => item.msg ?? JSON.stringify(item))
+          .join('; ')
+      }
+
+      return (
+        data.message ??
+        JSON.stringify(data.detail ?? data) ??
+        `Request failed (${response.status})`
+      )
+    } catch {
+      return `Request failed (${response.status})`
+    }
+  }
+
+  const loadTournaments = useCallback(async () => {
+    setLoadingTournaments(true)
+    setError('')
+
+    try {
+      const response = await fetch(`${API_URL}/api/tournaments/`)
+
+      if (!response.ok) {
+        throw new Error(await parseError(response))
+      }
+
+      const data = await response.json()
+
+      const list = Array.isArray(data)
+        ? data
+        : data.tournaments ?? data.data ?? []
+
+      setTournaments(list)
+
+      setSelectedTournament((current) => {
+        if (
+          current &&
+          list.some(
+            (item) =>
+              String(item.id ?? item.tournament_id) === current,
+          )
+        ) {
+          return current
+        }
+
+        const defaultTournament = list.find(
+          (item) =>
+            String(item.id ?? item.tournament_id) ===
+            String(TOURNAMENT_ID),
+        )
+
+        const firstTournament = list[0]
+
+        return String(
+          defaultTournament?.id ??
+          defaultTournament?.tournament_id ??
+          firstTournament?.id ??
+          firstTournament?.tournament_id ??
+          '',
+        )
+      })
+    } catch (err) {
+      setError(
+        `Could not load tournaments. ${err.message}`,
+      )
+    } finally {
+      setLoadingTournaments(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    loadTournaments()
+  }, [loadTournaments])
+
+  useEffect(() => {
+    if (!selectedTournament) {
+      setTournamentStatus(null)
+      return
+    }
+
+    let cancelled = false
+
+    async function loadStatus() {
+      setLoadingStatus(true)
+      setTournamentStatus(null)
+
+      try {
+        const response = await fetch(
+          `${API_URL}/api/import/tournaments/${selectedTournament}/status`,
+        )
+
+        if (!response.ok) {
+          throw new Error(await parseError(response))
+        }
+
+        const data = await response.json()
+
+        if (!cancelled) {
+          setTournamentStatus(data)
+        }
+      } catch {
+        if (!cancelled) {
+          setTournamentStatus(null)
+        }
+      } finally {
+        if (!cancelled) {
+          setLoadingStatus(false)
+        }
+      }
+    }
+
+    loadStatus()
+
+    return () => {
+      cancelled = true
+    }
+  }, [selectedTournament])
+
+  function handleFileChange(event) {
+    const selectedFile = event.target.files?.[0] ?? null
+
+    setFile(null)
+    setPreview(null)
+    setImportResult(null)
+    setError('')
+    setNotice('')
+
+    if (!selectedFile) return
+
+    if (!selectedFile.name.toLowerCase().endsWith('.csv')) {
+      setError('Please select a CSV file.')
+      event.target.value = ''
+      return
+    }
+
+    if (selectedFile.size > 10 * 1024 * 1024) {
+      setError('The file exceeds the 10 MB upload limit.')
+      event.target.value = ''
+      return
+    }
+
+    setFile(selectedFile)
+  }
+
+  async function handlePreview() {
+    if (!file) {
+      setError('Choose a CSV file before previewing.')
+      return
+    }
+
+    if (!selectedTournament) {
+      setError('Select a tournament first.')
+      return
+    }
+
+    setPreviewing(true)
+    setPreview(null)
+    setImportResult(null)
+    setError('')
+    setNotice('')
+
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+
+      const response = await fetch(
+        `${API_URL}/api/import/tournaments/${selectedTournament}/preview`,
+        {
+          method: 'POST',
+          body: formData,
+        },
+      )
+
+      if (!response.ok) {
+        throw new Error(await parseError(response))
+      }
+
+      const data = await response.json()
+
+      setPreview(data)
+
+      if (data.valid && numeric(data.error_count) === 0) {
+        setNotice('Validation completed. Review the preview before importing.')
+      } else {
+        setError('The file contains validation errors. Correct them before importing.')
+      }
+    } catch (err) {
+      setError(`Preview failed. ${err.message}`)
+    } finally {
+      setPreviewing(false)
+    }
+  }
+
+  async function handleImport() {
+    if (!file || !preview || !selectedTournament) {
+      setError('Select a file and preview it before importing.')
+      return
+    }
+
+    if (!preview.valid || numeric(preview.error_count) > 0) {
+      setError('Import blocked because the preview contains validation errors.')
+      return
+    }
+
+    if (hasExistingMatches) {
+      setError(
+        'This tournament already contains match data. Choose an empty tournament to avoid accidental duplicate imports.',
+      )
+      return
+    }
+
+    const confirmed = window.confirm(
+      `Import ${preview.valid_rows} result rows into "${selectedTournamentData?.name ?? selectedTournamentData?.tournament_name ?? 'the selected tournament'}"? This action will write data to the database.`,
+    )
+
+    if (!confirmed) return
+
+    setImporting(true)
+    setError('')
+    setNotice('')
+    setImportResult(null)
+
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+
+      const params = new URLSearchParams({
+        tournament_id: selectedTournament,
+      })
+
+      const game =
+        selectedTournamentData?.game ??
+        selectedTournamentData?.game_name
+
+      if (game) params.set('game', game)
+
+      const response = await fetch(
+        `${API_URL}/api/import/import?${params.toString()}`,
+        {
+          method: 'POST',
+          body: formData,
+        },
+      )
+
+      if (!response.ok) {
+        throw new Error(await parseError(response))
+      }
+
+      const data = await response.json()
+
+      setImportResult(data)
+
+      if (data.archive_status === 'saved') {
+        setNotice(
+          `Import completed successfully. CSV archived as ${data.saved_filename}.`,
+        )
+      } else if (data.archive_status === 'failed') {
+        setNotice(
+          'Import succeeded, but CSV archiving failed. The database data was saved.',
+        )
+      } else {
+        setNotice('Import completed successfully.')
+      }
+
+      setPreview(null)
+      setFile(null)
+
+      setTournamentStatus(null)
+
+      await loadTournaments()
+
+    } catch (err) {
+      setError(`Import failed. ${err.message}`)
+    } finally {
+      setImporting(false)
+    }
+  }
+
+  const previewRows = preview?.preview ?? []
+
+  return (
+    <div className="data-management-page">
+      <section className="panel">
+        <SectionHeading
+          eyebrow="DATA OPERATIONS"
+          title="Import tournament results"
+          description="Upload a match-results CSV, validate the data, inspect a preview, and import it into an empty tournament."
+        />
+
+        <div className="data-import-grid">
+          <div className="data-import-field">
+            <label htmlFor="import-tournament">
+              Destination tournament
+            </label>
+
+            <select
+              id="import-tournament"
+              value={selectedTournament}
+              disabled={loadingTournaments || importing}
+              onChange={(event) => {
+                setSelectedTournament(event.target.value)
+                setPreview(null)
+                setImportResult(null)
+                setError('')
+                setNotice('')
+              }}
+            >
+              <option value="">
+                {loadingTournaments
+                  ? 'Loading tournaments…'
+                  : 'Select a tournament'}
+              </option>
+
+              {tournaments.map((tournament) => {
+                const id =
+                  tournament.id ?? tournament.tournament_id
+
+                return (
+                  <option key={id} value={String(id)}>
+                    {tournament.name ??
+                      tournament.tournament_name ??
+                      tournament.slug ??
+                      `Tournament ${id}`}
+                  </option>
+                )
+              })}
+            </select>
+
+            {selectedTournamentData && (
+              <small>
+                Tournament ID:{' '}
+                {selectedTournamentData.id ??
+                  selectedTournamentData.tournament_id}
+              </small>
+            )}
+          </div>
+
+          <div className="data-import-field">
+            <label htmlFor="import-csv">Match results CSV</label>
+
+            <label
+              className={`csv-dropzone ${file ? 'csv-dropzone-selected' : ''}`}
+              htmlFor="import-csv"
+            >
+              <FileSpreadsheet size={29} />
+
+              <strong>
+                {file ? file.name : 'Choose a CSV file'}
+              </strong>
+
+              <span>
+                {file
+                  ? `${(file.size / 1024).toFixed(1)} KB`
+                  : 'CSV format · Maximum 10 MB'}
+              </span>
+
+              <input
+                id="import-csv"
+                type="file"
+                accept=".csv,text/csv"
+                onChange={handleFileChange}
+                disabled={importing}
+              />
+            </label>
+          </div>
+        </div>
+
+        {loadingStatus && selectedTournament && (
+          <div className="import-status-note">
+            Checking the selected tournament…
+          </div>
+        )}
+
+        {!loadingStatus && hasExistingMatches && (
+          <div className="import-alert import-alert-warning">
+            <AlertCircle size={19} />
+
+            <div>
+              <strong>Tournament already has match data</strong>
+              <p>
+                Select an empty tournament for this import. Existing
+                match data will not be overwritten.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {error && (
+          <div className="import-alert import-alert-error" role="alert">
+            <AlertCircle size={19} />
+            <p>{error}</p>
+          </div>
+        )}
+
+        {notice && (
+          <div className="import-alert import-alert-success" role="status">
+            <CheckCircle2 size={19} />
+            <p>{notice}</p>
+          </div>
+        )}
+
+        <div className="import-actions">
+          <button
+            type="button"
+            className="import-button import-button-secondary"
+            onClick={handlePreview}
+            disabled={
+              !file ||
+              !selectedTournament ||
+              previewing ||
+              importing
+            }
+          >
+            {previewing ? (
+              <LoaderCircle size={17} className="spin" />
+            ) : (
+              <Search size={17} />
+            )}
+
+            {previewing ? 'Validating CSV…' : 'Validate & preview'}
+          </button>
+
+          <button
+            type="button"
+            className="import-button import-button-primary"
+            onClick={handleImport}
+            disabled={
+              !file ||
+              !preview ||
+              !preview.valid ||
+              numeric(preview.error_count) > 0 ||
+              importing ||
+              previewing ||
+              hasExistingMatches ||
+              loadingStatus
+            }
+          >
+            {importing ? (
+              <LoaderCircle size={17} className="spin" />
+            ) : (
+              <Upload size={17} />
+            )}
+
+            {importing ? 'Importing…' : 'Import results'}
+          </button>
+        </div>
+      </section>
+
+      {preview && (
+        <>
+          <section className="import-summary-grid">
+            <article className="panel import-summary-card">
+              <span>Rows received</span>
+              <strong>{formatNumber(preview.rows_received)}</strong>
+            </article>
+
+            <article className="panel import-summary-card">
+              <span>Valid rows</span>
+              <strong>{formatNumber(preview.valid_rows)}</strong>
+            </article>
+
+            <article className="panel import-summary-card">
+              <span>Matches detected</span>
+              <strong>{formatNumber(preview.matches_detected)}</strong>
+            </article>
+
+            <article className="panel import-summary-card">
+              <span>Teams detected</span>
+              <strong>{formatNumber(preview.teams_detected)}</strong>
+            </article>
+          </section>
+
+          <section className="panel table-panel">
+            <SectionHeading
+              eyebrow="VALIDATION RESULTS"
+              title="CSV preview"
+              description={`Showing ${previewRows.length} sample rows. Check the values before importing.`}
+              action={
+                <span
+                  className={`import-validation-badge ${preview.valid && numeric(preview.error_count) === 0
+                    ? 'valid'
+                    : 'invalid'
+                    }`}
+                >
+                  {preview.valid && numeric(preview.error_count) === 0
+                    ? 'VALID'
+                    : `${numeric(preview.error_count)} ERRORS`}
+                </span>
+              }
+            />
+
+            <div className="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>MATCH ID</th>
+                    <th>DAY</th>
+                    <th>MAP</th>
+                    <th>MATCH</th>
+                    <th>TEAM</th>
+                    <th>PLACE</th>
+                    <th>ELIMS</th>
+                    <th>PLACEMENT PTS</th>
+                    <th>TOTAL PTS</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {previewRows.map((row, index) => (
+                    <tr key={`${row.match_id}-${row.team_name}-${index}`}>
+                      <td>{row.match_id ?? '—'}</td>
+                      <td>{row.day ?? '—'}</td>
+                      <td>{row.map ?? '—'}</td>
+                      <td>{row.match ?? '—'}</td>
+                      <td><strong>{row.team_name ?? '—'}</strong></td>
+                      <td>{row.placement ?? '—'}</td>
+                      <td>{row.eliminations ?? '—'}</td>
+                      <td>{row.placement_points ?? '—'}</td>
+                      <td className="points-cell">{row.total_points ?? '—'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              {!previewRows.length && (
+                <EmptyState message="The API did not return preview rows." />
+              )}
+            </div>
+          </section>
+        </>
+      )}
+
+      {importResult && (
+        <section className="panel import-complete-panel">
+          <div className="import-complete-icon">
+            <CheckCircle2 size={27} />
+          </div>
+
+          <div>
+            <div className="eyebrow">IMPORT COMPLETE</div>
+            <h2>Results imported successfully</h2>
+            <p>
+              {importResult.message ??
+                'The CSV data was accepted by the import API.'}
+            </p>
+          </div>
+
+          <button
+            type="button"
+            className="refresh-button"
+            onClick={loadTournaments}
+          >
+            <RefreshCw size={16} />
+            Refresh tournaments
+          </button>
+        </section>
+      )}
+    </div>
+  )
+}
+
+/* =========================================================
+   TOURNAMENT HOME
+========================================================= */
+
+function TournamentHome({ onAnalyze }) {
+  const [tournaments, setTournaments] = useState([])
+  const [statuses, setStatuses] = useState({})
+  const [name, setName] = useState('')
+  const [file, setFile] = useState(null)
+  const [preview, setPreview] = useState(null)
+  const [loadingList, setLoadingList] = useState(true)
+  const [validating, setValidating] = useState(false)
+  const [importing, setImporting] = useState(false)
+  const [error, setError] = useState('')
+  const [notice, setNotice] = useState('')
+  const [deletingId, setDeletingId] = useState(null);
+
+  async function parseApiError(response) {
+    try {
+      const data = await response.json()
+      if (typeof data.detail === 'string') return data.detail
+      if (data.detail?.message) {
+        const errors = data.detail.errors || []
+        const first = errors[0]?.error
+        return first
+          ? `${data.detail.message} ${first}`
+          : data.detail.message
+      }
+      if (Array.isArray(data.detail)) {
+        return data.detail.map((item) => item.msg).join('; ')
+      }
+      return data.message || JSON.stringify(data)
+    } catch {
+      return `Request failed (${response.status})`
+    }
+  }
+
+  async function loadTournaments() {
+    setLoadingList(true)
+    setError('')
+
+    try {
+      const response = await fetch(`${API_URL}/api/tournaments/`)
+      if (!response.ok) throw new Error(await parseApiError(response))
+
+      const data = await response.json()
+      const list = Array.isArray(data) ? data : data.tournaments || []
+      setTournaments(list)
+
+      const statusEntries = await Promise.all(
+        list.map(async (tournament) => {
+          try {
+            const statusResponse = await fetch(
+              `${API_URL}/api/import/tournaments/${tournament.id}/status`,
+            )
+            if (!statusResponse.ok) return [tournament.id, null]
+            return [tournament.id, await statusResponse.json()]
+          } catch {
+            return [tournament.id, null]
+          }
+        }),
+      )
+
+      setStatuses(Object.fromEntries(statusEntries))
+    } catch (err) {
+      setError(`Could not load tournaments. ${err.message}`)
+    } finally {
+      setLoadingList(false)
+    }
+  }
+
+  useEffect(() => {
+    loadTournaments()
+  }, [])
+
+  function handleFileChange(event) {
+    const selected = event.target.files?.[0] ?? null
+    setFile(null)
+    setPreview(null)
+    setError('')
+    setNotice('')
+
+    if (!selected) return
+
+    if (!selected.name.toLowerCase().endsWith('.csv')) {
+      setError('Please select a CSV file.')
+      event.target.value = ''
+      return
+    }
+
+    if (selected.size > 10 * 1024 * 1024) {
+      setError('The CSV exceeds the 10 MB upload limit.')
+      event.target.value = ''
+      return
+    }
+
+    setFile(selected)
+  }
+
+  async function validateCsv() {
+    if (!name.trim()) {
+      setError('Enter a tournament name first.')
+      return
+    }
+
+    if (!file) {
+      setError('Choose a CSV file first.')
+      return
+    }
+
+    setValidating(true)
+    setError('')
+    setNotice('')
+    setPreview(null)
+
+    try {
+      const form = new FormData()
+      form.append('file', file)
+
+      const response = await fetch(`${API_URL}/api/import/preview`, {
+        method: 'POST',
+        body: form,
+      })
+
+      if (!response.ok) throw new Error(await parseApiError(response))
+
+      const result = await response.json()
+      setPreview(result)
+
+      if (!result.valid || Number(result.error_count) > 0) {
+        setError(
+          `CSV validation failed: ${result.error_count} issue(s). Review the errors below.`,
+        )
+      } else {
+        setNotice(
+          `CSV validated: ${result.valid_rows} rows, ${result.matches_detected} matches and ${result.teams_detected} teams.`,
+        )
+      }
+    } catch (err) {
+      setError(`CSV validation failed. ${err.message}`)
+    } finally {
+      setValidating(false)
+    }
+  }
+
+  async function analyzeTournament() {
+    if (!preview?.valid || Number(preview.error_count) > 0 || !file) {
+      setError('Validate a CSV without errors before analyzing it.')
+      return
+    }
+
+    const cleanName = name.trim()
+    const slug = cleanName
+      .normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '')
+
+    if (!slug) {
+      setError('Use a tournament name containing letters or numbers.')
+      return
+    }
+
+    setImporting(true)
+    setError('')
+    setNotice('')
+
+    try {
+      const form = new FormData()
+      form.append('file', file)
+
+      const params = new URLSearchParams({
+        tournament_name: cleanName,
+        tournament_slug: slug,
+        game: 'BGMI',
+      })
+
+      const response = await fetch(
+        `${API_URL}/api/import/import?${params.toString()}`,
+        {
+          method: 'POST',
+          body: form,
+        },
+      )
+
+      if (!response.ok) throw new Error(await parseApiError(response))
+
+      const result = await response.json()
+
+      setNotice(
+        `Imported ${result.teams_imported} teams, ${result.matches_imported} matches and ${result.results_imported} result rows.`,
+      )
+
+      await loadTournaments()
+
+      onAnalyze({
+        id: result.tournament_id,
+        name: result.tournament_name,
+        slug,
+        game: 'BGMI',
+        status: 'completed',
+        total_teams: result.teams_imported,
+      })
+    } catch (err) {
+      setError(`Tournament import failed. ${err.message}`)
+    } finally {
+      setImporting(false)
+    }
+  }
+
+
+  async function deleteTournament(tournament) {
+    const confirmed = window.confirm(
+      `Delete "${tournament.name}" permanently? Its teams, matches, and results will also be deleted. This cannot be undone.`,
+    )
+    if (!confirmed) return
+
+    setDeletingId(tournament.id)
+    setError('')
+    setNotice('')
+
+    try {
+      const response = await fetch(
+        `${API_URL}/api/tournaments/${tournament.id}`,
+        { method: 'DELETE' },
+      )
+
+      if (!response.ok) {
+        let message = `Request failed (${response.status})`
+        try {
+          const data = await response.json()
+          message =
+            typeof data.detail === 'string'
+              ? data.detail
+              : JSON.stringify(data.detail ?? data)
+        } catch {}
+        throw new Error(message)
+      }
+
+      setNotice(`"${tournament.name}" was deleted.`)
+      await loadTournaments()
+    } catch (err) {
+      setError(`Could not delete tournament. ${err.message}`)
+    } finally {
+      setDeletingId(null)
+    }
+  }
+
+  return (
+    <div className="tournament-home">
+      <header className="home-header">
+        <div className="brand">
+          <div className="brand-mark">
+            <Activity size={23} strokeWidth={2.5} />
+          </div>
+          <div>
+            <div className="brand-name">
+              META<span>MASTERS</span>
+            </div>
+            <div className="brand-subtitle">ESPORTS INTELLIGENCE</div>
+          </div>
+        </div>
+        <span className="home-live-badge">
+          <span className="live-dot" /> BGMI ANALYTICS
+        </span>
+      </header>
+
+      <main className="home-main">
+        <section className="home-hero">
+          <div className="eyebrow heading-eyebrow">
+            <span className="live-dot" /> YOUR ESPORTS WORKSPACE
+          </div>
+          <h1>
+            Every match.
+            <br />
+            <span>Every decision.</span>
+          </h1>
+          <p>
+            Import tournament results, uncover team performance and
+            explore your competitive intelligence in one place.
+          </p>
+        </section>
+
+        <section className="home-import-card">
+          <div className="home-card-heading">
+            <span className="home-step">01</span>
+            <div>
+              <h2>Analyze a tournament</h2>
+              <p>Create a tournament from a validated match-results CSV.</p>
+            </div>
+          </div>
+
+          <label className="home-field">
+            <span>Tournament name</span>
+            <input
+              value={name}
+              onChange={(event) => {
+                setName(event.target.value)
+                setPreview(null)
+                setError('')
+              }}
+              placeholder="e.g. BGMI Championship 2026"
+              maxLength={200}
+              disabled={validating || importing}
+            />
+          </label>
+
+          <label className="home-file-picker">
+            <FileSpreadsheet size={25} />
+            <span>
+              <strong>{file ? file.name : 'Choose tournament CSV'}</strong>
+              <small>
+                {file
+                  ? `${(file.size / 1024).toFixed(1)} KB · Ready to validate`
+                  : 'CSV format · Maximum 10 MB'}
+              </small>
+            </span>
+            <input
+              type="file"
+              accept=".csv,text/csv"
+              onChange={handleFileChange}
+              disabled={validating || importing}
+            />
+          </label>
+
+          {error && (
+            <div className="home-message home-message-error" role="alert">
+              <AlertCircle size={18} />
+              <span>{error}</span>
+            </div>
+          )}
+
+          {notice && (
+            <div className="home-message home-message-success" role="status">
+              <CheckCircle2 size={18} />
+              <span>{notice}</span>
+            </div>
+          )}
+
+          {preview && (
+            <div className="home-preview">
+              <div>
+                <span>Valid rows</span>
+                <strong>{formatNumber(preview.valid_rows)}</strong>
+              </div>
+              <div>
+                <span>Matches</span>
+                <strong>{formatNumber(preview.matches_detected)}</strong>
+              </div>
+              <div>
+                <span>Teams</span>
+                <strong>{formatNumber(preview.teams_detected)}</strong>
+              </div>
+              <div>
+                <span>Errors</span>
+                <strong>{formatNumber(preview.error_count)}</strong>
+              </div>
+            </div>
+          )}
+
+          {preview?.errors?.length > 0 && (
+            <div className="home-validation-errors">
+              {preview.errors.slice(0, 5).map((item, index) => (
+                <p key={`${item.row ?? 'file'}-${index}`}>
+                  {item.row ? `Row ${item.row}: ` : ''}
+                  {item.error}
+                </p>
+              ))}
+              {preview.errors_truncated && <p>More errors were omitted.</p>}
+            </div>
+          )}
+
+          <div className="home-form-actions">
+            <button
+              type="button"
+              className="home-secondary-button"
+              onClick={validateCsv}
+              disabled={!file || !name.trim() || validating || importing}
+            >
+              {validating ? (
+                <LoaderCircle size={17} className="spin" />
+              ) : (
+                <Search size={17} />
+              )}
+              {validating ? 'Validating CSV…' : 'Validate CSV'}
+            </button>
+
+            <button
+              type="button"
+              className="home-primary-button"
+              onClick={analyzeTournament}
+              disabled={
+                !file ||
+                !name.trim() ||
+                !preview?.valid ||
+                Number(preview?.error_count) > 0 ||
+                validating ||
+                importing
+              }
+            >
+              {importing ? (
+                <LoaderCircle size={17} className="spin" />
+              ) : (
+                <Zap size={17} />
+              )}
+              {importing ? 'Importing tournament…' : 'Analyze Tournament'}
+            </button>
+          </div>
+          <p className="home-safety-note">
+            <Shield size={14} />
+            Data is validated before it is saved. Existing tournaments
+            are not overwritten.
+          </p>
+        </section>
+
+        <section className="home-tournaments">
+          <div className="home-section-heading">
+            <div>
+              <div className="eyebrow">YOUR LIBRARY</div>
+              <h2>Saved tournaments</h2>
+              <p>Choose a tournament to open its analytics dashboard.</p>
+            </div>
+            <button
+              type="button"
+              className="home-refresh-button"
+              onClick={loadTournaments}
+              disabled={loadingList}
+              aria-label="Refresh tournaments"
+            >
+              <RefreshCw
+                size={17}
+                className={loadingList ? 'spin' : ''}
+              />
+            </button>
+          </div>
+
+          {loadingList ? (
+            <div className="home-empty-state">
+              <LoaderCircle size={23} className="spin" />
+              Loading saved tournaments…
+            </div>
+          ) : tournaments.length === 0 ? (
+            <div className="home-empty-state">
+              No tournaments yet. Import your first CSV above.
+            </div>
+          ) : (
+            <div className="home-tournament-list">
+              {tournaments.map((tournament) => {
+                const status = statuses[tournament.id]
+                const matchCount = Number(status?.matches ?? 0)
+                const teamCount = Number(status?.teams ?? tournament.total_teams ?? 0)
+                const ready = matchCount > 0 && Number(status?.results ?? 0) > 0
+
+                return (
+                  <article
+                    className="home-tournament-card"
+                    key={tournament.id}
+                  >
+                    <div className="home-tournament-symbol">
+                      <Trophy size={21} />
+                    </div>
+                    <div className="home-tournament-info">
+                      <h3>{tournament.name}</h3>
+                      <p>
+                        {tournament.game || 'BGMI'} · Tournament #{tournament.id}
+                      </p>
+                      <div className="home-tournament-stats">
+                        <span>{formatNumber(teamCount)} teams</span>
+                        <span>{formatNumber(matchCount)} matches</span>
+                        <span className={ready ? 'home-ready' : 'home-empty'}>
+                          {ready ? 'Data ready' : 'No match data'}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="home-tournament-actions">
+                      <button
+                        type="button"
+                        className="home-analyze-button"
+                        disabled={!ready || importing || !status || deletingId !== null}
+                        onClick={() => onAnalyze(tournament)}
+                        title={ready ? 'Open tournament dashboard' : 'Import match results first'}
+                      >
+                        Analyze <span aria-hidden="true">→</span>
+                      </button>
+                      <button
+                        type="button"
+                        className="home-delete-button"
+                        disabled={deletingId !== null || importing}
+                        onClick={() => deleteTournament(tournament)}
+                        title={`Delete ${tournament.name}`}
+                        aria-label={`Delete ${tournament.name}`}
+                      >
+                        {deletingId === tournament.id ? (
+                          <LoaderCircle size={16} className="spin" />
+                        ) : (
+                          <Trash2 size={16} />
+                        )}
+                        <span>{deletingId === tournament.id ? 'Deleting…' : 'Delete'}</span>
+                      </button>
+                    </div>
+                  </article>
+                )
+              })}
+            </div>
+          )}
+        </section>
+
+        <footer className="home-footer">
+          <span>© 2026 MetaMasters Analytics</span>
+          <span>Built for competitive intelligence</span>
+        </footer>
+      </main>
+    </div>
+  )
+}
+
+/* =========================================================
    MAIN APPLICATION
 ========================================================= */
 
 export default function App() {
+  const [activeTournament, setActiveTournament] = useState(null)
   const [activePage, setActivePage] = useState('Overview')
   const [teams, setTeams] = useState([])
   const [analytics, setAnalytics] = useState([])
@@ -2011,14 +3040,17 @@ export default function App() {
   const [lastUpdated, setLastUpdated] = useState(null)
 
   const loadDashboard = useCallback(async () => {
+    if (!activeTournament?.id) return
+
     setLoading(true)
     setError('')
 
     try {
+      const tournamentId = activeTournament.id
       const endpoints = [
-        `${API_URL}/api/standings/${TOURNAMENT_ID}`,
-        `${API_URL}/api/analytics/${TOURNAMENT_ID}/teams`,
-        `${API_URL}/api/tournaments/${TOURNAMENT_ID}/history`,
+        `${API_URL}/api/standings/${tournamentId}`,
+        `${API_URL}/api/analytics/${tournamentId}/teams`,
+        `${API_URL}/api/tournaments/${tournamentId}/history`,
       ]
 
       const responses = await Promise.all(
@@ -2117,15 +3149,27 @@ export default function App() {
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [activeTournament?.id])
 
   useEffect(() => {
+    if (!activeTournament?.id) return
     loadDashboard()
-  }, [loadDashboard])
+  }, [activeTournament?.id, loadDashboard])
 
   function navigate(page) {
     setActivePage(page)
     setMobileNavOpen(false)
+  }
+
+  function openTournament(tournament) {
+    setTeams([])
+    setAnalytics([])
+    setMatches([])
+    setError('')
+    setSearch('')
+    setActivePage('Overview')
+    setLoading(true)
+    setActiveTournament(tournament)
   }
 
   const pageDescription = {
@@ -2139,6 +3183,10 @@ export default function App() {
     'Team Comparison':
       'Compare teams, identify strengths and analyse performance.',
   }[activePage]
+
+  if (!activeTournament) {
+    return <TournamentHome onAnalyze={openTournament} />
+  }
 
   return (
     <div className="app-shell">
@@ -2174,9 +3222,8 @@ export default function App() {
           {NAVIGATION.map(({ label, icon: Icon }) => (
             <button
               key={label}
-              className={`nav-item ${
-                activePage === label ? 'nav-active' : ''
-              }`}
+              className={`nav-item ${activePage === label ? 'nav-active' : ''
+                }`}
               onClick={() => navigate(label)}
             >
               <Icon size={19} />
@@ -2205,7 +3252,7 @@ export default function App() {
                     ? 'Connecting…'
                     : 'Dataset connected'}
               </strong>
-              <span>BGMS historical results</span>
+              <span>{activeTournament.name}</span>
             </div>
 
             <span
@@ -2247,6 +3294,17 @@ export default function App() {
           </div>
 
           <div className="topbar-right">
+            <button
+              type="button"
+              className="home-back-button"
+              onClick={() => {
+                setActiveTournament(null)
+                setError('')
+                setMobileNavOpen(false)
+              }}
+            >
+              ← Tournaments
+            </button>
             <span className="connection-status">
               <span
                 className="live-dot"
@@ -2301,10 +3359,12 @@ export default function App() {
 
               <span>
                 <small>ACTIVE DATASET</small>
-                <strong>BGMS Historical Dataset</strong>
+                <strong>{activeTournament.name}</strong>
               </span>
 
-              <span className="dataset-id">#02</span>
+              <span className="dataset-id">
+                #{String(activeTournament.id).padStart(2, '0')}
+              </span>
             </div>
           </section>
 
@@ -2374,12 +3434,12 @@ export default function App() {
             <span>
               {lastUpdated
                 ? `Last synced ${lastUpdated.toLocaleTimeString(
-                    [],
-                    {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    },
-                  )}`
+                  [],
+                  {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  },
+                )}`
                 : 'Waiting for API'}
 
               <span className="footer-separator"> · </span>

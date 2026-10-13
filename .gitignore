@@ -1,0 +1,18 @@
+
+# Uploaded CSV archives
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# Local database
+data/*.db
+data/*.db-shm
+data/*.db-wal
+
+# Frontend dependencies and builds
+frontend/node_modules/
+frontend/dist/
